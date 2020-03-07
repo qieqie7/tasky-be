@@ -24,11 +24,11 @@
     "node": ">=10.16.0"
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=midway-server-my_first_midway_project --framework=midway --ts",
-    "stop": "egg-scripts stop --title=midway-server-my_first_midway_project",
+    "start": "egg-scripts start --port=4771 --daemon --title=midway-server-my_first_midway_project --framework=midway --ts",
+    "stop": "egg-scripts stop --port=4771 --title=midway-server-my_first_midway_project",
     "start_build": "npm run build && cross-env NODE_ENV=development midway-bin dev",
     "clean": "midway-bin clean",
-    "dev": "cross-env NODE_ENV=local midway-bin dev --ts",
+    "dev": "cross-env PORT=4771 NODE_ENV=local midway-bin dev --ts",
     "debug": "cross-env NODE_ENV=local midway-bin debug --ts",
     "test": "npm run lint && midway-bin test --ts",
     "cov": "midway-bin cov --ts",
