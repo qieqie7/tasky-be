@@ -1,0 +1,53 @@
+name: epidemic-map-be CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+#       - name: Use Node.js v12
+#         uses: actions/setup-node@v1
+#         with:
+#           node-version: 12.x
+#       - run: npm install
+#       - run: npm run build
+#         env:
+#           CI: true
+
+      - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@v2.0.8
+        env:
+          # Private Key
+          SSH_PRIVATE_KEY: ${{ secrets.TOKEN }}
+          # Remote host
+          REMOTE_HOST: '122.51.128.124'
+          # Remote user
+          REMOTE_USER: 'root'
+          # Remote port
+          # REMOTE_PORT: # optional, default is 22
+          # Source directory
+          SOURCE: '' # optional, default is
+          # Target directory
+          TARGET: '/root/tasty/be' # optional, default is /home/REMOTE_USER/
+          ARGS: '-avzr --delete'
+
+      - name: start server
+        uses: appleboy/ssh-action@master
+        with:
+          host: '122.51.128.124'
+          username: 'root'
+          key: ${{ secrets.TOKEN }}
+          # port: 22
+          script: |
+            cd /root/tasty/be
+            npm i
+            npm run build
+            npm run stop
+            npm run start
