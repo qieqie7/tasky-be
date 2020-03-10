@@ -18,7 +18,8 @@ export class HousekeeperController {
     const content = `早上好啊！下面播报今日天气：
 ${weather.city}今日温度：${weather.temp}
 ${weather.wind}`;
-    const response = await this.ctx.curl('127.0.0.1:4770/api/v1/message/sendToContact', {
+    // TODO: 配置nginx转发
+    const response = await this.ctx.curl('122.51.128.124:4770/api/v1/message/sendToContact', {
       method: 'POST',
       data: { name: '一颗赛艇🚤', content },
     });
