@@ -11,5 +11,12 @@ export default (appInfo: EggAppInfo) => {
   // add your config here
   config.middleware = ['globalErrorHandler'];
 
+  config.httpclient = {
+    request: {
+      // default timeout of request
+      timeout: 30000,
+    },
+  };
+
   return config;
 };

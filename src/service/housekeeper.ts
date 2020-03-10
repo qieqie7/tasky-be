@@ -3,11 +3,11 @@
  * @Author: ykst
  * @Date: 2020-03-07 23:28:59
  * @LastEditors: ykst
- * @LastEditTime: 2020-03-08 00:35:14
+ * @LastEditTime: 2020-03-10 22:11:40
  */
 import { provide, inject, Context } from 'midway';
 
-interface weather {
+interface Weather {
   status: string;
   city: string;
   aqi: string;
@@ -31,11 +31,11 @@ export class HousekeeperService {
   @inject()
   ctx: Context;
 
-  async getTowDayWeather(id: string): Promise<weather> {
+  async getTowDayWeather(id: string): Promise<Weather> {
     const response = await this.ctx.curl(`https://api.help.bj.cn/apis/weather2d/?id=${id}`);
     if (response.status == 200) {
       const { data } = response;
-      const d: weather = JSON.parse(data.toString('utf8'));
+      const d: Weather = JSON.parse(data.toString('utf8'));
       return d;
     } else {
       throw new Error('天气查询api网络障碍');
