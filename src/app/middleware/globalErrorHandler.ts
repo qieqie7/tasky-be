@@ -6,6 +6,7 @@ export default () => async (ctx: Context, next: any) => {
     await next();
   } catch (error) {
     // 成功的请求
+    console.log(error);
     const requestUrl = `${ctx.method} ${ctx.path}`;
     if (error instanceof HttpException) {
       ctx.status = error.status;
