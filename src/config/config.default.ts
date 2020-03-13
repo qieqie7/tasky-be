@@ -9,7 +9,8 @@ export default (appInfo: EggAppInfo) => {
   config.keys = appInfo.name + '_1583562771108_9113';
 
   // add your config here
-  config.middleware = ['globalErrorHandler'];
+  // response 中间件必须放在最后，防止返回被没收啦
+  config.middleware = ['response'];
 
   config.httpclient = {
     request: {

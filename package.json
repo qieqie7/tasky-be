@@ -4,8 +4,9 @@
   "description": "{{description}}",
   "private": true,
   "dependencies": {
+    "egg-scripts": "^2.10.0",
     "midway": "^1.0.0",
-    "egg-scripts": "^2.10.0"
+    "nodejieba": "^2.4.1"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.7",

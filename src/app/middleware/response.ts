@@ -1,9 +1,16 @@
 import { Context } from 'midway';
-import { HttpException } from '../../lib/http-exception';
+import { HttpException, Success } from '../../lib/http-response';
 
 export default () => async (ctx: Context, next: any) => {
   try {
-    await next();
+    const response: Success | undefined = await next();
+    if (response) {
+      ctx.status = response.status || 200;
+      ctx.body = {
+        msg: response.msg || 'ok',
+        data: response.data,
+      };
+    }
   } catch (error) {
     // 成功的请求
     console.log(error);

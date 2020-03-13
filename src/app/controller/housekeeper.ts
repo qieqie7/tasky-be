@@ -1,6 +1,6 @@
 import { Context, inject, controller, get, provide } from 'midway';
 import { HousekeeperService } from '../../service/housekeeper';
-import { Success, ServerException } from '../../lib/http-exception';
+import { ServerException, Success } from '../../lib/http-response';
 
 @provide()
 @controller('/api/housekeeper')
@@ -23,10 +23,10 @@ export class HousekeeperController {
       method: 'POST',
       data: { name: '一颗赛艇🚤', content },
     });
-    if (response.status === 200) {
-      throw new Success('发送成功');
+    if (response.status !== 200) {
+      throw new ServerException();
     }
-    throw new ServerException({});
+    throw new Success();
   }
 
   @get('/sendWeatherToCat')
@@ -39,16 +39,16 @@ export class HousekeeperController {
     明日天气：${weather.tomorrow.weather},  ${weather.tomorrow.temp},  ${weather.tomorrow.wind}`;
     const response = await this.ctx.curl('122.51.128.124:4770/api/v1/message/sendToRooms', {
       method: 'POST',
-      // NOTE: 采坑，之前一直拿不到 targets
+      // NOTE: 踩坑，之前一直拿不到 targets
       headers: { 'content-type': 'application/json' },
       data: {
         targets: [{ name: '猫奴' }],
         content,
       },
     });
-    if (response.status === 200) {
-      throw new Success('发送成功');
+    if (response.status !== 200) {
+      throw new ServerException({ msg: response.data.toString() });
     }
-    throw new ServerException({ msg: response.data.toString() });
+    return new Success();
   }
 }
