@@ -2,8 +2,8 @@ import { provide, schedule, CommonSchedule } from 'midway';
 
 @provide()
 @schedule({
-  // cron: '0 30 8 * * ?',
-  interval: '10s',
+  cron: '0 30 8 * * ?',
+  // interval: '10s',
   type: 'worker', // 指定某一个 worker 执行
 })
 export class DailyWeather implements CommonSchedule {
