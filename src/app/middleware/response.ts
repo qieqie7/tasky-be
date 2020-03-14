@@ -2,6 +2,7 @@ import { Context } from 'midway';
 import { HttpException, Success } from '../../lib/http-response';
 
 export default () => async (ctx: Context, next: any) => {
+  const requestUrl = `${ctx.method} ${ctx.path}`;
   try {
     const response: Success | undefined = await next();
     if (response) {
@@ -10,11 +11,15 @@ export default () => async (ctx: Context, next: any) => {
         msg: response.msg || 'ok',
         data: response.data,
       };
+    } else {
+      ctx.status = 500;
+      ctx.body = {
+        msg: 'we made a mistake O(∩_∩)O~',
+        requestUrl,
+      };
     }
   } catch (error) {
-    // 成功的请求
     console.log(error);
-    const requestUrl = `${ctx.method} ${ctx.path}`;
     if (error instanceof HttpException) {
       ctx.status = error.status;
       ctx.body = {

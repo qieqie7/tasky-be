@@ -32,14 +32,14 @@ export class HttpException<T = undefined> extends Error {
 
 export class ServerException extends HttpException {
   constructor(params?: Response) {
-    const { msg = '服务端异常', status = 500 } = params;
+    const { msg = '服务端异常', status = 500 } = params || {};
     super({ msg, status });
   }
 }
 
 export class TimeoutException extends HttpException {
-  constructor(params: Response) {
-    const { msg = '服务器超时', status = 504 } = params;
+  constructor(params?: Response) {
+    const { msg = '服务器超时', status = 504 } = params || {};
     super({ msg, status });
   }
 }

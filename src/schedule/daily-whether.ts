@@ -8,7 +8,7 @@ import { provide, schedule, CommonSchedule } from 'midway';
 })
 export class DailyWeather implements CommonSchedule {
   async exec(ctx) {
-    await ctx.curl('127.0.0.1:4771/api/housekeeper/sendWeatherToRoom', {
+    await ctx.curl('127.0.0.1:4771/api/housekeeper/sendWeatherToRooms', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       data: {
@@ -17,7 +17,7 @@ export class DailyWeather implements CommonSchedule {
       },
     });
 
-    await ctx.curl('127.0.0.1:4771/api/housekeeper/sendWeatherToRoom', {
+    await ctx.curl('127.0.0.1:4771/api/housekeeper/sendWeatherToRooms', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       data: { cityName: '黄山', targets: ['无产阶级先锋队👊'] },
