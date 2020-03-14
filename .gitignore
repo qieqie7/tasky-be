@@ -15,3 +15,5 @@ run/
 .tsbuildinfo.*
 
 .vscode
+
+/config/*.config.json

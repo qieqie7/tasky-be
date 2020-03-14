@@ -1,1 +1,2 @@
 // .gitkeep
+declare module '*.json';

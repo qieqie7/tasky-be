@@ -4,6 +4,9 @@
   "description": "{{description}}",
   "private": true,
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "@types/hapi__joi": "^16.0.12",
+    "egg-mysql": "^3.0.0",
     "egg-scripts": "^2.10.0",
     "midway": "^1.0.0",
     "nodejieba": "^2.4.1"

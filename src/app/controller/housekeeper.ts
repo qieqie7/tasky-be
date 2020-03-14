@@ -1,6 +1,7 @@
-import { Context, inject, controller, get, provide } from 'midway';
+import { Context, inject, controller, get, provide, post } from 'midway';
 import { HousekeeperService } from '../../service/housekeeper';
-import { ServerException, Success } from '../../lib/http-response';
+import { ServerException, Success, HttpException } from '../../lib/http-response';
+import * as Joi from '@hapi/joi';
 
 @provide()
 @controller('/api/housekeeper')
@@ -13,12 +14,9 @@ export class HousekeeperController {
 
   @get('/sendWeatherToMyWechat')
   async sendWeatherToMyWechat() {
-    const id = this.ctx.query.id || '上海';
-    const weather = await this.service.getTowDayWeather(id);
-    const content = `早上好啊！
-    今日天气预报：
-    ${weather.city}今日天气：${weather.weather},  ${weather.temp},  ${weather.wind}
-    明日天气：${weather.tomorrow.weather},  ${weather.tomorrow.temp},  ${weather.tomorrow.wind}`;
+    const cityName = this.ctx.query.id || '上海';
+    const weatherDate = await this.service.getDailyWeather(cityName);
+    const content = this.service.getWeatherString(weatherDate);
     const response = await this.ctx.curl('122.51.128.124:4770/api/v1/message/sendToContact', {
       method: 'POST',
       data: { name: '一颗赛艇🚤', content },
@@ -26,23 +24,34 @@ export class HousekeeperController {
     if (response.status !== 200) {
       throw new ServerException();
     }
-    throw new Success();
+    return new Success();
   }
 
-  @get('/sendWeatherToCat')
-  async sendWeatherToCat() {
-    const id = this.ctx.query.id || '上海';
-    const weather = await this.service.getTowDayWeather(id);
-    const content = `早上好啊！
-    今日天气预报：
-    ${weather.city}今日天气：${weather.weather},  ${weather.temp},  ${weather.wind}
-    明日天气：${weather.tomorrow.weather},  ${weather.tomorrow.temp},  ${weather.tomorrow.wind}`;
+  @post('/sendWeatherToRoom')
+  async sendWeatherToRoom() {
+    const body: { cityName: string; targets: string[] } = this.ctx.request.body;
+    const schema = Joi.object({
+      cityName: Joi.string().required(),
+      targets: Joi.array()
+        .required()
+        .min(1)
+        .items(Joi.string().required()),
+    }).required();
+
+    const v = schema.validate(body);
+    if (v.error) {
+      throw new HttpException({ msg: `Joi error: ${v.error.message}` });
+    }
+
+    const { cityName, targets } = body;
+    const weatherDate = await this.service.getDailyWeather(cityName);
+    const content = this.service.getWeatherString(weatherDate);
     const response = await this.ctx.curl('122.51.128.124:4770/api/v1/message/sendToRooms', {
       method: 'POST',
       // NOTE: 踩坑，之前一直拿不到 targets
       headers: { 'content-type': 'application/json' },
       data: {
-        targets: [{ name: '猫奴' }],
+        targets: targets.map(name => ({ name })),
         content,
       },
     });
