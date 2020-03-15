@@ -11,12 +11,6 @@ export default () => async (ctx: Context, next: any) => {
         msg: response.msg || 'ok',
         data: response.data,
       };
-    } else {
-      ctx.status = 500;
-      ctx.body = {
-        msg: 'we made a mistake O(∩_∩)O~',
-        requestUrl,
-      };
     }
   } catch (error) {
     console.log(error);
