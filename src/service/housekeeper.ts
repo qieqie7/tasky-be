@@ -39,7 +39,7 @@ export class HousekeeperService {
     let content = `${city}天气预报：\n`;
     daily.forEach(
       (
-        { date, text_day, text_night, high, low, precip, rainfall, wind_direction, wind_scale },
+        { date, text_day, text_night, high, low, rainfall, wind_direction, wind_scale, humidity },
         index,
       ) => {
         let day = date;
@@ -51,10 +51,9 @@ export class HousekeeperService {
 
         content += `${day} ${text_day}转${text_night}\n`;
         content += `${low}℃ ~ ${high}℃${+low < 10 ? '，注意保暖哦' : ''}\n`;
-        content += `降雨概率${+precip}%${
-          +precip > 30 ? `，降雨量约${rainfall}，外出备把伞吧` : ''
-        }\n`;
-        content += `${wind_direction || '无'}风${wind_scale ? `，风力为${wind_scale}级` : ''}\n\n`;
+        content += `降雨量约${rainfall}mm${+rainfall > 0 ? '，记得外出备把伞' : ''}\n`;
+        content += `${wind_direction || '无'}风${wind_scale ? `，${wind_scale}级` : ''}\n`;
+        content += `相对湿度${humidity}%\n\n`;
       },
     );
 

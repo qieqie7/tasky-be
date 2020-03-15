@@ -52,7 +52,6 @@ export const weatherSchema = Joi.object({
               text_night: Joi.string(),
               high: Joi.string(),
               low: Joi.string(),
-              precip: Joi.string().allow(''),
               wind_direction: Joi.string().allow(''),
               wind_speed: Joi.string(),
               wind_scale: Joi.string(),
