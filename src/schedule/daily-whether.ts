@@ -2,7 +2,7 @@ import { provide, schedule, CommonSchedule } from 'midway';
 
 @provide()
 @schedule({
-  cron: '0 30 8 * * ?',
+  cron: '0 00 8 * * ?',
   // interval: '20s',
   type: 'worker', // 指定某一个 worker 执行
 })
