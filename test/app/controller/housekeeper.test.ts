@@ -2,7 +2,7 @@
 const { app, assert } = require('midway-mock/bootstrap');
 /* tslint:enable */
 
-describe('test/app/controller/home.test.ts', () => {
+describe('test/app/controller/housekeeper.test.ts', () => {
 
   it('should assert', async () =>{
     const pkg = require('../../../package.json');
